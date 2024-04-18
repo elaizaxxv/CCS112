@@ -1,0 +1,76 @@
+import React, { useState } from 'react';
+
+// Product component
+const Product = ({ product, onAddToCart }) => {
+  return (
+    <div>
+      <h3>{product.name}</h3>
+      <p>{product.description}</p>
+      <p>Price: ${product.price}</p>
+      <button onClick={() => onAddToCart(product)}>Add to Cart</button>
+    </div>
+  );
+};
+
+// ProductPage component
+const ProductPage = ({ products, onAddToCart }) => {
+  return (
+    <div>
+      <h2>Products</h2>
+      {products.map(product => (
+        <Product key={product.id} product={product} onAddToCart={onAddToCart} />
+      ))}
+    </div>
+  );
+};
+
+// Cart component
+const Cart = ({ cartItems }) => {
+  return (
+    <div>
+      <h2>Cart</h2>
+      <ul>
+        {cartItems.map(item => (
+          <li key={item.id}>{item.name} - ${item.price}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+// CartSummary component
+const CartSummary = ({ cartItems }) => {
+  const totalPrice = cartItems.reduce((acc, item) => acc + item.price, 0);
+
+  return (
+    <div>
+      <h2>Cart Summary</h2>
+      <p>Total Price: ${totalPrice}</p>
+    </div>
+  );
+};
+
+// App component
+const App = () => {
+  const [cartItems, setCartItems] = useState([]);
+
+  const addToCart = (product) => {
+    setCartItems([...cartItems, product]);
+  };
+
+  const products = [
+    { id: 1, name: 'Product 1', description: 'Description 1', price: 10 },
+    { id: 2, name: 'Product 2', description: 'Description 2', price: 20 },
+    // Add more products here
+  ];
+
+  return (
+    <div>
+      <ProductPage products={products} onAddToCart={addToCart} />
+      <Cart cartItems={cartItems} />
+      <CartSummary cartItems={cartItems} />
+    </div>
+  );
+};
+
+export default App;
